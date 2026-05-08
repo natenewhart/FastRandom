@@ -34,7 +34,7 @@ Copy the headers you need from `include/FastRandom/` into your project. No build
 
 ### Static Hash Functions (`FastRandom.hpp`)
 
-No state, no setup — pass a seed, get a value back. Same seed always produces the same result.
+Only static functions. Given a seed, hash it and convert it to double, float, or integer.
 
 ```cpp
 double   d  = FastRandom::i64Double(seed);  // [0, 1) using Splittable64
