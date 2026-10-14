@@ -12,7 +12,7 @@ A lightweight, header-only C++ random number library. Can be used with or withou
 
 ## Installation
 
-Copy the headers you need from `include/FastRandom/` into your project. No build step required.
+Copy the headers you need from `include/FastRandom/` into your project.
 
 ## Include Options
 
@@ -24,7 +24,7 @@ Copy the headers you need from `include/FastRandom/` into your project. No build
 #include "FastRandom.hpp"
 #include "FastRandomGen.hpp"
 
-// Option 3: Everything, including OS-backed seed generation
+// Option 3: Include All
 #include "FastRandom.hpp"
 #include "FastRandomGen.hpp"
 #include "FastRandomSeed.hpp"
@@ -35,6 +35,8 @@ Copy the headers you need from `include/FastRandom/` into your project. No build
 ### Static Hash Functions (`FastRandom.hpp`)
 
 Only static functions. Given a seed, hash it and convert it to double, float, or integer.
+
+`FastRandom.hpp` only contains two base [hash functions](#fastrandom-internals) for 32 bit and 64 integers which are used for their respective types.
 
 ```cpp
 double   d  = FastRandom::i64Double(seed);  // [0, 1) using Splittable64
@@ -58,12 +60,12 @@ uint64_t u = FastRandom::ScaleUInt(value, 0ull, 1000ull);
 ### Compile-Time Seed (`FastRandom.hpp`)
 
 ```cpp
-uint64_t seed = FastRandom::CompileTimeSeed(); // Baked in at compile time — same every run
+uint64_t seed = FastRandom::CompileTimeSeed(); // Generate a compile time seed using the __TIME__ macro
 ```
 
-### Stateful Generator (`FastRandomGen.hpp`)
+### Random Number Generator Object (`FastRandomGen.hpp`)
 
-Works like `std::mt19937` but hash-based and lighter weight.
+A Random Number Generation Object Using 64 Bit and 32 Bit Hashing (Similar to `std::mt19937`)
 
 ```cpp
 FastRandom::Generator rng;           // Default constructor seeded with CompileTimeSeed()
@@ -90,11 +92,11 @@ rng.SetRangeInt(-100, 100);
 rng.Int(); // now always draws from [-100, 100]
 rng.ResetRanges(); // restore all defaults
 
-// Reseed at runtime
+// Reseeding during runtime
 rng.SetSeed(99999);
 ```
 
-### OS-Backed Seed Generation (`FastRandomSeed.hpp`)
+### C++ Standard Seed Generation (`FastRandomSeed.hpp`)
 
 ```cpp
 uint32_t s32 = FastRandom::GenerateSeed32();           // std::random_device
@@ -106,7 +108,7 @@ uint32_t t32 = FastRandom::GetCurrentTime<uint32_t>();
 FastRandom::Generator rng(FastRandom::GenerateSeed64());
 ```
 
-### Hash & Shift Internals (`FastRandom.hpp`)
+### FastRandom Internals (`FastRandom.hpp`)
 
 Available for advanced use:
 
