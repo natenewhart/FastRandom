@@ -2,13 +2,13 @@
 
 A lightweight, header-only C++ random number library. Can be used with or without dependency to C++ std library.
 
-## Headers
+## Header Files
 
-| Header | Depends On | Description |
+| Header | Dependencies | Description |
 |---|---|---|
-| `FastRandom.hpp` | `<cstdint>` only | Core hash functions, scaling utilities, compile-time seed |
+| `FastRandom.hpp` | `<cstdint>` only | Core hash functions, scaling utilities, compile-time seed generation |
 | `FastRandomGen.hpp` | `FastRandom.hpp` | Stateful generator class with persistent ranges |
-| `FastRandomSeed.hpp` | `<random>`, `<chrono>` | OS-backed and time-based seed generation |
+| `FastRandomSeed.hpp` | `<random>`, `<chrono>` | time-based seed generation using c++ standard library |
 
 ## Installation
 
@@ -129,12 +129,6 @@ uint32_t u = FastRandom::Shift::ToUInt32(hash64);  // 64 bits → 32 bits
 | Reproducible results (testing, procgen) | `CompileTimeSeed()` or a hardcoded value |
 | Different every run, no std:: | `GetCurrentTime<uint64_t>()` |
 | Best entropy, std:: acceptable | `GenerateSeed64()` |
-
-## Requirements
-
-- C++17 or later (for `std::is_same_v`)
-- `FastRandomSeed.hpp` requires `<random>` and `<chrono>`
-- `FastRandom.hpp` and `FastRandomGen.hpp` require only `<cstdint>` and `<climits>`
 
 ## License
 
