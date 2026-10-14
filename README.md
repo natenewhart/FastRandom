@@ -36,7 +36,7 @@ Copy the headers you need from `include/FastRandom/` into your project.
 
 Only static functions. Given a seed, hash it and convert it to double, float, or integer.
 
-`FastRandom.hpp` only contains two base [hash functions](#fastrandom-internals) for 32 bit and 64 integers which are used for their respective types.
+`FastRandom.hpp` only contains two base [hash functions](#fastrandom-internals-fastrandomhpp) for 32 bit and 64 integers which are used for their respective types.
 
 ```cpp
 double   d  = FastRandom::i64Double(seed);  // [0, 1) using Splittable64
