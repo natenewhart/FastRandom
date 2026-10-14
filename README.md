@@ -110,7 +110,7 @@ FastRandom::Generator rng(FastRandom::GenerateSeed64());
 
 ### FastRandom Internals (`FastRandom.hpp`)
 
-Available for advanced use:
+Helper Functions Available for advanced use in `FastRandom.hpp`:
 
 ```cpp
 // Hash functions
