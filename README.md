@@ -1,6 +1,6 @@
 # FastRandom
 
-A lightweight, header-only C++ random number library built on hash functions with zero heavy dependencies. Include only what you need.
+A lightweight, header-only C++ random number library. Can be used with or without dependency to C++ std library.
 
 ## Headers
 
