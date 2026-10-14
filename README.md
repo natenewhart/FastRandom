@@ -66,7 +66,7 @@ uint64_t seed = FastRandom::CompileTimeSeed(); // Baked in at compile time — s
 Works like `std::mt19937` but hash-based and lighter weight.
 
 ```cpp
-FastRandom::Generator rng;           // Seeded with CompileTimeSeed()
+FastRandom::Generator rng;           // Default constructor seeded with CompileTimeSeed()
 FastRandom::Generator rng(12345);    // User provided seed
 
 // One-off calls using default ranges
