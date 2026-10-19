@@ -1,18 +1,18 @@
 # FastRandom
 
-A lightweight, header-only C++ random number library built on hash functions with zero heavy dependencies. Include only what you need.
+A lightweight, header-only C++ random number library. Can be used with or without dependency to C++ std library.
 
-## Headers
+## Header Files
 
-| Header | Depends On | Description |
+| Header | Dependencies | Description |
 |---|---|---|
-| `FastRandom.hpp` | `<cstdint>` only | Core hash functions, scaling utilities, compile-time seed |
+| `FastRandom.hpp` | `<cstdint>` only | Core hash functions, scaling utilities, compile-time seed generation |
 | `FastRandomGen.hpp` | `FastRandom.hpp` | Stateful generator class with persistent ranges |
-| `FastRandomSeed.hpp` | `<random>`, `<chrono>` | OS-backed and time-based seed generation |
+| `FastRandomSeed.hpp` | `<random>`, `<chrono>` | time-based seed generation using c++ standard library |
 
 ## Installation
 
-Copy the headers you need from `include/FastRandom/` into your project. No build step required.
+Copy the headers you need from `include/FastRandom/` into your project.
 
 ## Include Options
 
@@ -24,7 +24,7 @@ Copy the headers you need from `include/FastRandom/` into your project. No build
 #include "FastRandom.hpp"
 #include "FastRandomGen.hpp"
 
-// Option 3: Everything, including OS-backed seed generation
+// Option 3: Include All
 #include "FastRandom.hpp"
 #include "FastRandomGen.hpp"
 #include "FastRandomSeed.hpp"
@@ -34,7 +34,9 @@ Copy the headers you need from `include/FastRandom/` into your project. No build
 
 ### Static Hash Functions (`FastRandom.hpp`)
 
-No state, no setup — pass a seed, get a value back. Same seed always produces the same result.
+Only static functions. Given a seed, hash it and convert it to double, float, or integer.
+
+`FastRandom.hpp` only contains two base [hash functions](#fastrandom-internals-fastrandomhpp) for 32 bit and 64 integers which are used for their respective types.
 
 ```cpp
 double   d  = FastRandom::i64Double(seed);  // [0, 1) using Splittable64
@@ -58,15 +60,15 @@ uint64_t u = FastRandom::ScaleUInt(value, 0ull, 1000ull);
 ### Compile-Time Seed (`FastRandom.hpp`)
 
 ```cpp
-uint64_t seed = FastRandom::CompileTimeSeed(); // Baked in at compile time — same every run
+uint64_t seed = FastRandom::CompileTimeSeed(); // Generate a compile time seed using the __TIME__ macro
 ```
 
-### Stateful Generator (`FastRandomGen.hpp`)
+### Random Number Generator Object (`FastRandomGen.hpp`)
 
-Works like `std::mt19937` but hash-based and lighter weight.
+A Random Number Generation Object Using 64 Bit and 32 Bit Hashing (Similar to `std::mt19937`)
 
 ```cpp
-FastRandom::Generator rng;           // Seeded with CompileTimeSeed()
+FastRandom::Generator rng;           // Default constructor seeded with CompileTimeSeed()
 FastRandom::Generator rng(12345);    // User provided seed
 
 // One-off calls using default ranges
@@ -90,11 +92,11 @@ rng.SetRangeInt(-100, 100);
 rng.Int(); // now always draws from [-100, 100]
 rng.ResetRanges(); // restore all defaults
 
-// Reseed at runtime
+// Reseeding during runtime
 rng.SetSeed(99999);
 ```
 
-### OS-Backed Seed Generation (`FastRandomSeed.hpp`)
+### C++ Standard Seed Generation (`FastRandomSeed.hpp`)
 
 ```cpp
 uint32_t s32 = FastRandom::GenerateSeed32();           // std::random_device
@@ -106,9 +108,9 @@ uint32_t t32 = FastRandom::GetCurrentTime<uint32_t>();
 FastRandom::Generator rng(FastRandom::GenerateSeed64());
 ```
 
-### Hash & Shift Internals (`FastRandom.hpp`)
+### FastRandom Internals (`FastRandom.hpp`)
 
-Available for advanced use:
+Helper Functions Available for advanced use in `FastRandom.hpp`:
 
 ```cpp
 // Hash functions
@@ -129,12 +131,6 @@ uint32_t u = FastRandom::Shift::ToUInt32(hash64);  // 64 bits → 32 bits
 | Reproducible results (testing, procgen) | `CompileTimeSeed()` or a hardcoded value |
 | Different every run, no std:: | `GetCurrentTime<uint64_t>()` |
 | Best entropy, std:: acceptable | `GenerateSeed64()` |
-
-## Requirements
-
-- C++17 or later (for `std::is_same_v`)
-- `FastRandomSeed.hpp` requires `<random>` and `<chrono>`
-- `FastRandom.hpp` and `FastRandomGen.hpp` require only `<cstdint>` and `<climits>`
 
 ## License
 
