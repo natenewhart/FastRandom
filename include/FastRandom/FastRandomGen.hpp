@@ -15,30 +15,31 @@ namespace FastRandom
 
         void SetSeed(uint64_t seed);    // Reseed at runtime
 
-        // Range Setting Functions
-        void SetRangeDouble(double min, double max);
-        void SetRangeFloat (float min, float max);
-        void SetRangeInt   (int min, int max);
-        void SetRangeUInt64(uint64_t min, uint64_t max);
-        void SetRangeUInt32(uint32_t min, uint32_t max);
+        // Range Setting Functions (stored ranges are used by the no-argument functions below)
+        void SetRangeDouble(double min, double max);     // Default: [0.0, 1.0)
+        void SetRangeFloat (float min, float max);       // Default: [0.0f, 1.0f)
+        void SetRangeInt   (int min, int max);           // Default: [0, INT32_MAX]
+        void SetRangeUInt64(uint64_t min, uint64_t max); // Default: [0, UINT64_MAX]
+        void SetRangeUInt32(uint32_t min, uint32_t max); // Default: [0, UINT32_MAX]
 
-        void ResetRanges();
+        void ResetRanges(); // Restores every stored range to its default
 
         // Random Functions
-		float    RandF();  // Returns a float in [0, 1) using the current state
-		uint64_t Rand64(); // Returns a uint64_t using the current state
-		uint32_t Rand32(); // Returns a uint32_t using the current state
+        float    RandF (); // Returns a float in [0, 1) using the current state
+        uint64_t Rand64(); // Returns a uint64_t in [0, UINT64_MAX] using the current state
+        uint32_t Rand32(); // Returns a uint32_t in [0, UINT32_MAX] using the current state
 
-        double   Double();
-        double   Double(double min, double max);
-        float    Float();
-        float    Float(float min, float max);
-        int      Int();
-        int      Int(int min, int max);
-        uint64_t UInt64();
-        uint64_t UInt64(uint64_t min, uint64_t max);
-        uint32_t UInt32();
-        uint32_t UInt32(uint32_t min, uint32_t max);
+        // No-argument versions use the stored range; versions with min/max override it
+        double   Double();                           // [mDoubleMin, mDoubleMax)
+        double   Double(double min, double max);     // [min, max)
+        float    Float();                            // [mFloatMin, mFloatMax)
+        float    Float(float min, float max);        // [min, max)
+        int      Int();                              // [mIntMin, mIntMax]
+        int      Int(int min, int max);              // [min, max]
+        uint64_t UInt64();                           // [mUInt64Min, mUInt64Max]
+        uint64_t UInt64(uint64_t min, uint64_t max); // [min, max]
+        uint32_t UInt32();                           // [mUInt32Min, mUInt32Max]
+        uint32_t UInt32(uint32_t min, uint32_t max); // [min, max]
 
     private:
 		void ProcessState(); // Update internal state using the current seed and hash function
