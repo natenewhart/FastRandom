@@ -13,7 +13,6 @@ namespace FastRandom
 	uint64_t uInt64   (uint64_t seed); // Random uint64_t using Splittable64 hash
 
 	// Using PCG Hash (32-bit)
-	double   i32Double(uint32_t seed); // Return double between 0 and 1 using PCG hash NOTE: has less precision than its 64 bit counterpart
 	float    i32Float (uint32_t seed); // Return float  between 0 and 1 using PCG hash
 	uint32_t uInt32   (uint32_t seed); // Random uint32_t using PCG hash
 
@@ -55,11 +54,6 @@ inline float FastRandom::i64Float(uint64_t seed)
 inline uint64_t FastRandom::uInt64(uint64_t seed)
 {
 	return Hash::Splittablei64(seed);
-}
-
-inline double FastRandom::i32Double(uint32_t seed)
-{
-	return Shift::ToDouble(Hash::PCGi32(seed));
 }
 
 inline float FastRandom::i32Float(uint32_t seed)
