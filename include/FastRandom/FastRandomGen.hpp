@@ -24,11 +24,12 @@ namespace FastRandom
 
         void ResetRanges(); // Restores every stored range to its default
 
-        // Random Functions
+        // Default Range Random Functions
         float    RandF (); // Returns a float in [0, 1) using the current state
         uint64_t Rand64(); // Returns a uint64_t in [0, UINT64_MAX] using the current state
         uint32_t Rand32(); // Returns a uint32_t in [0, UINT32_MAX] using the current state
 
+        // Range based random functions
         // No-argument versions use the stored range; versions with min/max override it
         double   Double();                           // [mDoubleMin, mDoubleMax)
         double   Double(double min, double max);     // [min, max)

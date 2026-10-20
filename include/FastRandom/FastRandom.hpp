@@ -20,8 +20,8 @@ namespace FastRandom
 
 	double   ScaleDouble(double value, double min, double max); // value must be in [0, 1]
 	float    ScaleFloat (float value, float min, float max);    // value must be in [0, 1]
-	uint64_t ScaleUInt  (uint64_t value, uint64_t min, uint64_t max);
-	uint32_t ScaleUInt  (uint32_t value, uint32_t min, uint32_t max); 
+	uint64_t ScaleUInt  (uint64_t value, uint64_t min, uint64_t max); // 64 bit overload
+	uint32_t ScaleUInt  (uint32_t value, uint32_t min, uint32_t max); // 32 bit overload
 	int      ScaleInt   (uint32_t value, int min, int max); // Given a random uint32_t value, scale it to an int in the range [min, max]
 
 	namespace Shift
@@ -87,19 +87,21 @@ inline float FastRandom::ScaleFloat(float value, float min, float max)
 
 inline uint64_t FastRandom::ScaleUInt(uint64_t value, uint64_t min, uint64_t max)
 {
-	return min + (value % (max - min + 1));
+	uint64_t range = max - min + 1;
+	if (range == 0) return value;
+	return min + (value % range);
 }
 
 inline uint32_t FastRandom::ScaleUInt(uint32_t value, uint32_t min, uint32_t max)
 {
-	return min + (value % (max - min + 1));
+	uint64_t range = (uint64_t)max - (uint64_t)min + 1;
+	return min + (uint32_t)(value % range);
 }
 
 inline int FastRandom::ScaleInt(uint32_t value, int min, int max)
 {
-	uint32_t range  = (uint32_t)(max - min + 1);
-	uint32_t uvalue = (uint32_t)value;
-	return min + (int)(uvalue % range);
+	int64_t range  = (int64_t)max - (int64_t)min + 1;
+	return (int)((int64_t)min + (int64_t)value % range);
 }
 
 // -------------------------------- Shift Functions --------------------------------
